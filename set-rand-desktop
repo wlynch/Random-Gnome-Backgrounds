@@ -1,19 +1,64 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
-	echo "No path specified. Exiting."
-	exit 1
+# # # #
+# Simple script to change desktop backgrounds in gnome to 
+# set a random image in a given folder.
+# # # #
+
+DEBUG=0
+
+function help {
+	echo "Usage: `basename $0` [-hr] path"
+}
+
+function debug {
+	if [ $DEBUG -ne 0 ]; then
+		echo $@
+	fi
+}
+
+#Parse options
+while getopts "hr:" OPTION; do
+	case $OPTION in
+		h)
+			help
+			exit 0
+			;;
+		r)
+			if [ -z $OPTARG ]; then
+				echo "No path specified. Exiting."
+				exit 1
+			fi
+			photos=`find $OPTARG -type f`
+			;;
+	esac
+done
+
+#If the user did not choose to pick recursively
+if [ -z $photos ]; then
+	if [ -z $1 ]; then
+		echo "No path specified. Exiting."
+		exit 1
+	fi
+	photos=`ls -1 $1`
+	# Keep track of the base for the file path later on.
+	# We do not run into this problem with find.
+	$base="$1/"
 fi
 
-numPhotos=`ls $1 | wc -l`
+numPhotos=`echo $photos | wc -w`
 randID=`randN $numPhotos`
 
+# Iterate over the photos to pick the photo to use next.
 count=0
-for photo in `ls $1`; do
+for photo in `echo $photos`; do
 	if [ $count == $randID ]; then
 		break
 	fi
 	count=$(($count + 1))
 done
 
-gsettings set org.gnome.desktop.background picture-uri "file://$1/$photo"
+debug $photo
+
+# Set the background
+gsettings set org.gnome.desktop.background picture-uri "file://$base$photo"
