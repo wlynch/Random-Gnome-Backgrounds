@@ -11,6 +11,5 @@ To install the script, simply put randN and set-rand-background in your path and
 
 For example:
 
-0 * * * * wlynch92 ~/bin/set-rand-desktop ~/Pictures/
-
+`0 * * * * wlynch92 ~/bin/set-rand-desktop ~/Pictures/`
 
