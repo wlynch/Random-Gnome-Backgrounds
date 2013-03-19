@@ -7,7 +7,7 @@ Installation
 --------------
 To install the script, simply put randN and set-rand-background in your path and add a line in your crontab similar to:
 
-0 * * * * _user_ _location of set-rand-desktop_ _background folder_
+`0 * * * * <user> <location of set-rand-desktop> <background folder>
 
 For example:
 
