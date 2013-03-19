@@ -1,0 +1,12 @@
+#!/bin/bash
+
+n=$1
+if [ -z $1 ]; then
+	n=10
+fi
+
+time=`date +%N`
+time=`echo $time | sed 's/^0*//'`
+retval=$(($time%$n))
+
+echo $retval

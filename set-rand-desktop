@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	echo "No path specified. Exiting."
+	exit 1
+fi
+
+numPhotos=`ls $1 | wc -l`
+randID=`randN $numPhotos`
+
+count=0
+for photo in `ls $1`; do
+	if [ $count == $randID ]; then
+		break
+	fi
+	count=$(($count + 1))
+done
+
+gsettings set org.gnome.desktop.background picture-uri "file://$1/$photo"
