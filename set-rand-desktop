@@ -16,7 +16,7 @@ function debug {
 		echo $@
 	fi
 }
-
+numPhotos=0
 #Parse options
 while getopts "hr:" OPTION; do
 	case $OPTION in
@@ -30,23 +30,24 @@ while getopts "hr:" OPTION; do
 				exit 1
 			fi
 			photos=`find $OPTARG -type f`
+			numPhotos=`echo $photos | wc -w`
 			;;
 	esac
 done
 
 #If the user did not choose to pick recursively
-if [ -z $photos ]; then
+if [ $numPhotos -eq 0 ]; then
 	if [ -z $1 ]; then
 		echo "No path specified. Exiting."
 		exit 1
 	fi
 	photos=`ls -1 $1`
+	numPhotos=`echo $photos | wc -w`
 	# Keep track of the base for the file path later on.
 	# We do not run into this problem with find.
-	$base="$1/"
+	base="$1/"
 fi
 
-numPhotos=`echo $photos | wc -w`
 randID=`randN $numPhotos`
 
 # Iterate over the photos to pick the photo to use next.
